@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Andressa Santos Nails Studio</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="topo">
+  <h1>Andressa Santos Nails Studio</h1>
+
+  <nav>
+    <a href="#" onclick="mostrarHome()">Início</a>
+    <a href="#" onclick="mostrarAgenda()">Agendar</a>
+    <a href="https://www.instagram.com/dessasantoscc?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">Instagram</a>
+  </nav>
+</header>
+
+<main id="home" class="home">
+  <section class="hero">
+
+    <div class="texto">
+      <div class="logo-imagem">
+        <img src="logo.png" alt="Andressa Santos Nails Studio">
+      </div>
+
+      <p>
+    
+      </p>
+
+      <div class="botoes">
+        <button onclick="mostrarAgenda()" class="btn principal">Agendar horário</button>
+
+        <a href="https://www.instagram.com/dessasantoscc?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="btn secundario">
+          Instagram
+        </a>
+      </div>
+    </div>
+
+    <div class="visual">
+      <div class="banner-codigo">
+
+        <div class="faixa-linhas"></div>
+        <div class="curva-clara"></div>
+        <div class="detalhe-direita"></div>
+
+        <div class="foto-banner">
+          <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=900&auto=format&fit=crop" alt="Unhas delicadas">
+        </div>
+
+        <div class="texto-banner">
+          <h2>AS</h2>
+
+          <div class="ornamento">
+            <span></span>
+            ✦
+            <span></span>
+          </div>
+
+          <p>
+            Um espaço pensado para realçar sua beleza com delicadeza,
+            sofisticação e cuidado em cada detalhe.
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+</main>
+
+<section id="agenda" class="agenda escondido">
+  <div class="agenda-box">
+    <button onclick="mostrarHome()" class="voltar">← Voltar</button>
+
+    <div class="agenda-cabecalho">
+      <span>AGENDAMENTO ONLINE</span>
+      <h2>Escolha seu horário</h2>
+      <p>Selecione o serviço, a data e um horário disponível.</p>
+    </div>
+
+    <div class="agenda-etapa">
+      <h3>1. Serviço</h3>
+
+      <div class="servico-opcoes">
+        <button class="servico-btn ativo" data-servico="Manicure">Manicure</button>
+        <button class="servico-btn" data-servico="Pedicure">Pedicure</button>
+        <button class="servico-btn" data-servico="Alongamento">Alongamento</button>
+        <button class="servico-btn" data-servico="Nail Art">Nail Art</button>
+      </div>
+    </div>
+
+    <div class="agenda-etapa">
+      <h3>2. Data</h3>
+      <input type="date" id="dataAgenda">
+    </div>
+
+    <div class="agenda-etapa">
+      <h3>3. Horários disponíveis</h3>
+
+      <div id="horariosDisponiveis" class="horarios">
+        <p class="aviso">Escolha uma data para ver os horários.</p>
+      </div>
+    </div>
+
+    <div class="agenda-etapa dados">
+      <h3>4. Seus dados</h3>
+
+      <input type="text" id="clienteNome" placeholder="Seu nome">
+      <input type="tel" id="clienteTelefone" placeholder="Seu WhatsApp">
+
+      <button onclick="confirmarAgendamento()" class="btn-confirmar">
+        Confirmar agendamento
+      </button>
+    </div>
+  </div>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>
