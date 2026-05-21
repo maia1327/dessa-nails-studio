@@ -167,32 +167,43 @@ function mostrarAvisoCliente(texto) {
 }
 
 /* GALERIA AUTOMÁTICA DA HOME */
+
+const fotosGaleria = [
+  "fotos/foto1.jpg",
+  "fotos/foto2.jpg",
+  "fotos/foto3.jpg",
+  "fotos/foto4.jpg",
+  "fotos/foto5.jpg"
+];
+
 function iniciarGaleriaHome() {
   const imagemHome = document.getElementById("fotoGaleriaHome");
 
   if (!imagemHome) return;
 
-  const fotos = JSON.parse(localStorage.getItem("fotosTrabalhos")) || [];
-
-  if (fotos.length === 0) return;
-
   let fotoAtual = 0;
-  imagemHome.src = fotos[fotoAtual];
+
+  imagemHome.src = fotosGaleria[0];
 
   setInterval(() => {
-    fotoAtual++;
-
-    if (fotoAtual >= fotos.length) {
-      fotoAtual = 0;
-    }
 
     imagemHome.classList.add("trocando");
 
     setTimeout(() => {
-      imagemHome.src = fotos[fotoAtual];
+
+      fotoAtual++;
+
+      if (fotoAtual >= fotosGaleria.length) {
+        fotoAtual = 0;
+      }
+
+      imagemHome.src = fotosGaleria[fotoAtual];
+
       imagemHome.classList.remove("trocando");
+
     }, 300);
-  }, 3500);
+
+  }, 3000);
 }
 
 iniciarGaleriaHome();
