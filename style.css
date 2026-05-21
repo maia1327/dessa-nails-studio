@@ -215,7 +215,8 @@ body {
 }
 
 .escondido {
-  display: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .agenda {
@@ -506,4 +507,42 @@ body {
 
 .aviso-cliente.ativo {
   display: block;
+}
+
+.agenda {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 10, 5, 0.45);
+  backdrop-filter: blur(8px);
+  z-index: 999;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 30px;
+
+  transition: 0.3s;
+}
+
+.agenda-box {
+  width: 100%;
+  max-width: 850px;
+
+  max-height: 92vh;
+  overflow-y: auto;
+
+  animation: subirModal 0.35s ease;
+}
+
+@keyframes subirModal {
+  from {
+    opacity: 0;
+    transform: translateY(35px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }

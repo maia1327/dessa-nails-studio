@@ -6,13 +6,11 @@ function mostrarAgenda() {
   document.getElementById("home").classList.add("escondido");
   document.getElementById("agenda").classList.remove("escondido");
   carregarDatasEHorarios();
-  window.scrollTo(0, 0);
 }
 
 function mostrarHome() {
   document.getElementById("agenda").classList.add("escondido");
   document.getElementById("home").classList.remove("escondido");
-  window.scrollTo(0, 0);
 }
 
 const botoesServico = document.querySelectorAll(".servico-btn");
@@ -129,21 +127,21 @@ function confirmarAgendamento() {
     return;
   }
 
-  const telefoneStudio = "5551997529440";
+  const telefoneStudio = "5551982752289";
   const dataFormatada = formatarData(dataSelecionada);
 
   const mensagem =
-`✨ *NOVO AGENDAMENTO*
+`*NOVO AGENDAMENTO*
 
-💅 *Andressa Santos Nail Designer*
+*Andressa Santos Nail Designer*
 
-👤 Cliente: *${nome}*
+Cliente: *${nome}*
 
-📌 Serviço: *${servicoSelecionado}*
-📅 Data: *${dataFormatada}*
-⏰ Horário: *${horarioSelecionado}*
+Servico: *${servicoSelecionado}*
+Data: *${dataFormatada}*
+Horario: *${horarioSelecionado}*
 
-💖 Aguardo confirmação do horário.`;
+Aguardando confirmacao do horario.`;
 
   const link = `https://wa.me/${telefoneStudio}?text=${encodeURIComponent(mensagem)}`;
 
