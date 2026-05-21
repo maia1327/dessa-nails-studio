@@ -169,10 +169,10 @@ function mostrarAvisoCliente(texto) {
 /* GALERIA AUTOMÁTICA DA HOME */
 
 const fotosGaleria = [
-  "fotos/foto1.png",
-  "fotos/foto2.png",
-  "fotos/foto3.png",
-  "fotos/foto4.png",
+  "fotos/foto01.png",
+  "fotos/foto02.png",
+  "fotos/foto03.png",
+  "fotos/foto04.png",
 ];
 
 function iniciarGaleriaHome() {
