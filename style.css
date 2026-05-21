@@ -806,3 +806,92 @@ body{
     flex-direction:column;
   }
 }
+
+/* AJUSTE FINAL ADMIN - HORÁRIOS E FOTOS */
+
+.admin-preview{
+  width:48px !important;
+  height:48px !important;
+  border-radius:12px !important;
+}
+
+.admin-foto-item{
+  grid-template-columns:50px 1fr 95px !important;
+}
+
+.admin-horario-item{
+  display:flex !important;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+  padding:14px 16px;
+  margin-bottom:10px;
+  border-radius:18px;
+  background:#fbf6f0;
+  border:1px solid #d8c0ad;
+}
+
+.admin-horario-item > div:first-child{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.admin-horario-item strong{
+  color:#2d201b;
+  font-size:15px;
+}
+
+.admin-horario-item span{
+  color:#7d614d;
+  font-weight:900;
+}
+
+.admin-horario-item small{
+  padding:5px 10px;
+  border-radius:20px;
+  background:#e8f4ec;
+  color:#3f7f5f;
+  font-weight:900;
+}
+
+.admin-horario-item.ocupado small{
+  background:#fff0ee;
+  color:#8f3f35;
+}
+
+.admin-horario-acoes{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.admin-horario-acoes button{
+  border:none;
+  padding:9px 12px;
+  border-radius:14px;
+  background:#8b6b54;
+  color:white;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.admin-horario-acoes button:nth-child(2){
+  background:#3f7f5f;
+}
+
+.admin-horario-acoes .danger{
+  background:#8f3f35;
+}
+
+@media(max-width:900px){
+  .admin-foto-item{
+    grid-template-columns:48px 1fr !important;
+  }
+
+  .admin-horario-item{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+}
