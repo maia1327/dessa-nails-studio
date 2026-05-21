@@ -173,7 +173,6 @@ const fotosGaleria = [
   "fotos/foto2.png",
   "fotos/foto3.png",
   "fotos/foto4.png",
-  "fotos/foto5.png"
 ];
 
 function iniciarGaleriaHome() {
