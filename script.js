@@ -169,10 +169,10 @@ function mostrarAvisoCliente(texto) {
 /* GALERIA AUTOMÁTICA DA HOME */
 
 const fotosGaleria = [
-  "fotos/foto01.png",
-  "fotos/foto02.png",
-  "fotos/foto03.png",
-  "fotos/foto04.png",
+  "./fotos/foto01.png",
+  "./fotos/foto02.png",
+  "./fotos/foto03.png",
+  "./fotos/foto04.png"
 ];
 
 function iniciarGaleriaHome() {
@@ -182,14 +182,12 @@ function iniciarGaleriaHome() {
 
   let fotoAtual = 0;
 
-  imagemHome.src = fotosGaleria[0];
+  imagemHome.src = fotosGaleria[fotoAtual];
 
   setInterval(() => {
-
     imagemHome.classList.add("trocando");
 
     setTimeout(() => {
-
       fotoAtual++;
 
       if (fotoAtual >= fotosGaleria.length) {
@@ -197,12 +195,9 @@ function iniciarGaleriaHome() {
       }
 
       imagemHome.src = fotosGaleria[fotoAtual];
-
       imagemHome.classList.remove("trocando");
-
     }, 300);
-
   }, 3000);
 }
 
-iniciarGaleriaHome();
+window.addEventListener("load", iniciarGaleriaHome);
