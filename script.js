@@ -3,14 +3,12 @@ let servicoSelecionado = "Manicure";
 let dataSelecionada = "";
 
 function mostrarAgenda() {
-  document.getElementById("home").classList.add("escondido");
   document.getElementById("agenda").classList.remove("escondido");
   carregarDatasEHorarios();
 }
 
 function mostrarHome() {
   document.getElementById("agenda").classList.add("escondido");
-  document.getElementById("home").classList.remove("escondido");
 }
 
 const botoesServico = document.querySelectorAll(".servico-btn");
@@ -76,7 +74,7 @@ function carregarDatasEHorarios() {
       botao.onclick = () => {
         if (item.status === "ocupado") {
           mostrarAvisoCliente("Este horário já está ocupado. Escolha outro horário disponível.");
-         return;
+          return;
         }
 
         document.querySelectorAll(".horario-btn").forEach(btn => {
@@ -123,11 +121,11 @@ function confirmarAgendamento() {
   const nome = document.getElementById("clienteNome").value.trim();
 
   if (!nome || !dataSelecionada || !horarioSelecionado) {
-    alert("Preencha seu nome e escolha um horário disponível.");
+    mostrarAvisoCliente("Preencha seu nome e escolha um horário disponível.");
     return;
   }
 
-  const telefoneStudio = "5551982752289";
+  const telefoneStudio = "5551997529440";
   const dataFormatada = formatarData(dataSelecionada);
 
   const mensagem =
@@ -167,3 +165,34 @@ function mostrarAvisoCliente(texto) {
     aviso.classList.remove("ativo");
   }, 3000);
 }
+
+/* GALERIA AUTOMÁTICA DA HOME */
+function iniciarGaleriaHome() {
+  const imagemHome = document.getElementById("fotoGaleriaHome");
+
+  if (!imagemHome) return;
+
+  const fotos = JSON.parse(localStorage.getItem("fotosTrabalhos")) || [];
+
+  if (fotos.length === 0) return;
+
+  let fotoAtual = 0;
+  imagemHome.src = fotos[fotoAtual];
+
+  setInterval(() => {
+    fotoAtual++;
+
+    if (fotoAtual >= fotos.length) {
+      fotoAtual = 0;
+    }
+
+    imagemHome.classList.add("trocando");
+
+    setTimeout(() => {
+      imagemHome.src = fotos[fotoAtual];
+      imagemHome.classList.remove("trocando");
+    }, 300);
+  }, 3500);
+}
+
+iniciarGaleriaHome();

@@ -11,9 +11,21 @@
 <section class="agenda">
   <div class="agenda-box">
     <h2>Painel ADM</h2>
-    <p>Cadastre, edite, ocupe, libere ou exclua os horários.</p>
+    <p>Cadastre horários e fotos dos trabalhos.</p>
 
     <div id="mensagemAdmin" class="mensagem-admin"></div>
+
+    <div class="agenda-etapa">
+      <h3>Adicionar fotos dos trabalhos</h3>
+
+      <input type="file" id="adminFotos" accept="image/*" multiple>
+
+      <button class="btn-confirmar" onclick="adicionarFotos()">
+        Adicionar fotos
+      </button>
+
+      <div id="listaFotosAdmin" class="lista-fotos-admin"></div>
+    </div>
 
     <div class="agenda-etapa">
       <h3>Adicionar disponibilidade</h3>
@@ -39,6 +51,7 @@
 
 <script>
   let disponibilidades = JSON.parse(localStorage.getItem("disponibilidades")) || [];
+  let fotosTrabalhos = JSON.parse(localStorage.getItem("fotosTrabalhos")) || [];
   let editandoIndex = null;
 
   disponibilidades = disponibilidades.map(item => ({
@@ -54,6 +67,69 @@
     setTimeout(() => {
       msg.classList.remove("ativo");
     }, 2500);
+  }
+
+  function adicionarFotos() {
+    const input = document.getElementById("adminFotos");
+    const arquivos = Array.from(input.files);
+
+    if (arquivos.length === 0) {
+      mostrarMensagem("Selecione uma ou mais fotos.");
+      return;
+    }
+
+    let carregadas = 0;
+
+    arquivos.forEach(arquivo => {
+      const leitor = new FileReader();
+
+      leitor.onload = function(evento) {
+        fotosTrabalhos.push(evento.target.result);
+        carregadas++;
+
+        if (carregadas === arquivos.length) {
+          localStorage.setItem("fotosTrabalhos", JSON.stringify(fotosTrabalhos));
+          input.value = "";
+          renderizarFotosAdmin();
+          mostrarMensagem("Fotos adicionadas com sucesso!");
+        }
+      };
+
+      leitor.readAsDataURL(arquivo);
+    });
+  }
+
+  function excluirFoto(index) {
+    if (!confirm("Tem certeza que deseja excluir esta foto?")) {
+      return;
+    }
+
+    fotosTrabalhos.splice(index, 1);
+    localStorage.setItem("fotosTrabalhos", JSON.stringify(fotosTrabalhos));
+    renderizarFotosAdmin();
+    mostrarMensagem("Foto excluída.");
+  }
+
+  function renderizarFotosAdmin() {
+    const lista = document.getElementById("listaFotosAdmin");
+    lista.innerHTML = "";
+
+    if (fotosTrabalhos.length === 0) {
+      lista.innerHTML = "<p class='aviso'>Nenhuma foto cadastrada.</p>";
+      return;
+    }
+
+    fotosTrabalhos.forEach((foto, index) => {
+      const card = document.createElement("div");
+      card.className = "card-foto-admin";
+
+      card.innerHTML = `
+        <img src="${foto}" alt="Foto do trabalho">
+        <button onclick="excluirFoto(${index})">Excluir</button>
+      `;
+
+      lista.appendChild(card);
+    });
   }
 
   function adicionarHorario() {
@@ -171,6 +247,7 @@
     });
   }
 
+  renderizarFotosAdmin();
   renderizarHorarios();
 </script>
 
