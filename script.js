@@ -11,11 +11,9 @@ function mostrarHome() {
   document.getElementById("agenda").classList.add("escondido");
 }
 
-const botoesServico = document.querySelectorAll(".servico-btn");
-
-botoesServico.forEach(botao => {
+document.querySelectorAll(".servico-btn").forEach(botao => {
   botao.addEventListener("click", () => {
-    botoesServico.forEach(btn => btn.classList.remove("ativo"));
+    document.querySelectorAll(".servico-btn").forEach(btn => btn.classList.remove("ativo"));
     botao.classList.add("ativo");
     servicoSelecionado = botao.dataset.servico;
   });
@@ -77,9 +75,7 @@ function carregarDatasEHorarios() {
           return;
         }
 
-        document.querySelectorAll(".horario-btn").forEach(btn => {
-          btn.classList.remove("ativo");
-        });
+        document.querySelectorAll(".horario-btn").forEach(btn => btn.classList.remove("ativo"));
 
         botao.classList.add("ativo");
         dataSelecionada = data;
@@ -112,9 +108,7 @@ function formatarDataComDia(data) {
   ];
 
   const dataObj = new Date(data + "T00:00:00");
-  const diaSemana = dias[dataObj.getDay()];
-
-  return `${diaSemana} • ${formatarData(data)}`;
+  return `${dias[dataObj.getDay()]} • ${formatarData(data)}`;
 }
 
 function confirmarAgendamento() {
@@ -135,11 +129,11 @@ function confirmarAgendamento() {
 
 Cliente: *${nome}*
 
-Servico: *${servicoSelecionado}*
+Serviço: *${servicoSelecionado}*
 Data: *${dataFormatada}*
-Horario: *${horarioSelecionado}*
+Horário: *${horarioSelecionado}*
 
-Aguardando confirmacao do horario.`;
+Aguardando confirmação do horário.`;
 
   const link = `https://wa.me/${telefoneStudio}?text=${encodeURIComponent(mensagem)}`;
 
@@ -166,7 +160,7 @@ function mostrarAvisoCliente(texto) {
   }, 3000);
 }
 
-/* PORTFÓLIO / TABELA DE SERVIÇOS */
+/* PORTFÓLIO */
 
 const portfolioPadrao = {
   titulo: "Tabela de Serviços",
@@ -210,50 +204,52 @@ function renderizarPortfolio() {
   const config = carregarPortfolio();
 
   const titulo = document.getElementById("portfolioTitulo");
-  const subtitulo = document.getElementById("portfolioSubtitulo");
-  const listaAplicacoes = document.getElementById("listaAplicacoes");
-  const listaManutencoes = document.getElementById("listaManutencoes");
-
   if (!titulo) return;
 
-  titulo.innerText = config.titulo;
-  subtitulo.innerText = config.subtitulo;
+  document.getElementById("portfolioTitulo").innerText = config.titulo;
+  document.getElementById("portfolioSubtitulo").innerText = config.subtitulo;
 
-  listaAplicacoes.innerHTML = config.aplicacoes.map(criarLinhaServico).join("");
-  listaManutencoes.innerHTML = config.manutencoes.map(criarLinhaServico).join("");
+  document.getElementById("listaAplicacoes").innerHTML =
+    config.aplicacoes.map(criarLinhaServico).join("");
+
+  document.getElementById("listaManutencoes").innerHTML =
+    config.manutencoes.map(criarLinhaServico).join("");
 
   trocarFotosPortfolio();
+
   setInterval(trocarFotosPortfolio, 4500);
 }
 
 function pegarTresFotosAleatorias(fotos) {
-  const embaralhadas = [...fotos].sort(() => Math.random() - 0.5);
-  return embaralhadas.slice(0, 3);
+  const lista = fotos && fotos.length >= 3 ? fotos : portfolioPadrao.fotos;
+  return [...lista].sort(() => Math.random() - 0.5).slice(0, 3);
 }
 
 function trocarFotosPortfolio() {
   const config = carregarPortfolio();
   const fotos = pegarTresFotosAleatorias(config.fotos);
 
-  const img1 = document.getElementById("portfolioFoto1");
-  const img2 = document.getElementById("portfolioFoto2");
-  const img3 = document.getElementById("portfolioFoto3");
+  const imagens = [
+    document.getElementById("portfolioFoto1"),
+    document.getElementById("portfolioFoto2"),
+    document.getElementById("portfolioFoto3")
+  ];
 
-  if (!img1 || !img2 || !img3) return;
+  if (!imagens[0]) return;
 
   document.querySelectorAll(".foto-servico").forEach(card => {
     card.classList.add("trocando");
   });
 
   setTimeout(() => {
-    img1.src = fotos[0] || "./fotos/foto01.png";
-    img2.src = fotos[1] || "./fotos/foto02.png";
-    img3.src = fotos[2] || "./fotos/foto03.png";
+    imagens.forEach((img, index) => {
+      img.src = fotos[index];
+    });
 
     document.querySelectorAll(".foto-servico").forEach(card => {
       card.classList.remove("trocando");
     });
-  }, 450);
+  }, 400);
 }
 
 window.addEventListener("load", renderizarPortfolio);
