@@ -6,56 +6,110 @@
   <title>Painel ADM - Andressa Santos</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
 
-<section class="agenda">
-  <div class="agenda-box">
-    <h2>Painel ADM</h2>
-    <p>Edite serviços, valores, fotos e horários.</p>
+<body class="admin-page">
+
+<section class="admin-layout">
+  <div class="admin-shell">
+
+    <div class="admin-header">
+      <div>
+        <span>Painel administrativo</span>
+        <h1>Andressa Santos</h1>
+        <p>Gerencie serviços, valores, fotos e horários do site.</p>
+      </div>
+
+      <a href="index.html" class="admin-link">Ver site</a>
+    </div>
 
     <div id="mensagemAdmin" class="mensagem-admin"></div>
 
-    <div class="agenda-etapa">
-      <h3>Portfólio / Tabela de Serviços</h3>
+    <div class="admin-grid">
 
-      <input type="text" id="portfolioTituloAdmin" placeholder="Título">
-      <input type="text" id="portfolioSubtituloAdmin" placeholder="Subtítulo">
+      <div class="admin-card">
+        <div class="admin-card-top">
+          <div>
+            <span>Portfólio</span>
+            <h2>Tabela de serviços</h2>
+          </div>
+          <button class="admin-save" onclick="salvarPortfolio()">Salvar portfólio</button>
+        </div>
 
-      <h3>Aplicações</h3>
-      <div id="listaAplicacoesAdmin"></div>
-      <button class="btn-confirmar" onclick="adicionarServico('aplicacoes')">Adicionar aplicação</button>
+        <div class="admin-form">
+          <label>Título</label>
+          <input type="text" id="portfolioTituloAdmin" placeholder="Título">
 
-      <h3>Manutenções</h3>
-      <div id="listaManutencoesAdmin"></div>
-      <button class="btn-confirmar" onclick="adicionarServico('manutencoes')">Adicionar manutenção</button>
+          <label>Subtítulo</label>
+          <input type="text" id="portfolioSubtituloAdmin" placeholder="Subtítulo">
+        </div>
 
-      <h3>Fotos do portfólio</h3>
-      <p class="aviso">Use nomes como: ./fotos/foto01.png</p>
-      <div id="listaFotosPortfolioAdmin"></div>
-      <button class="btn-confirmar" onclick="adicionarFotoPortfolio()">Adicionar foto</button>
+        <div class="admin-section-title">
+          <h3>Aplicações</h3>
+          <button onclick="adicionarServico('aplicacoes')">+ Adicionar</button>
+        </div>
 
-      <button class="btn-confirmar" onclick="salvarPortfolio()">Salvar portfólio</button>
+        <div id="listaAplicacoesAdmin"></div>
+
+        <div class="admin-section-title">
+          <h3>Manutenções</h3>
+          <button onclick="adicionarServico('manutencoes')">+ Adicionar</button>
+        </div>
+
+        <div id="listaManutencoesAdmin"></div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-card-top">
+          <div>
+            <span>Galeria</span>
+            <h2>Fotos do portfólio</h2>
+          </div>
+        </div>
+
+        <p class="admin-ajuda">
+          Exemplo: <strong>./fotos/foto01.png</strong>
+        </p>
+
+        <div id="listaFotosPortfolioAdmin"></div>
+
+        <button class="admin-save full" onclick="adicionarFotoPortfolio()">+ Adicionar foto</button>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-card-top">
+          <div>
+            <span>Agenda</span>
+            <h2>Adicionar disponibilidade</h2>
+          </div>
+        </div>
+
+        <div class="admin-form duas-colunas">
+          <div>
+            <label>Data</label>
+            <input type="date" id="adminData">
+          </div>
+
+          <div>
+            <label>Horário</label>
+            <input type="time" id="adminHorario">
+          </div>
+        </div>
+
+        <button class="admin-save full" onclick="adicionarHorario()">Adicionar horário</button>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-card-top">
+          <div>
+            <span>Controle</span>
+            <h2>Horários cadastrados</h2>
+          </div>
+        </div>
+
+        <div id="listaHorarios"></div>
+      </div>
+
     </div>
-
-    <div class="agenda-etapa">
-      <h3>Adicionar disponibilidade</h3>
-
-      <input type="date" id="adminData">
-      <input type="time" id="adminHorario">
-
-      <button class="btn-confirmar" onclick="adicionarHorario()">
-        Adicionar horário
-      </button>
-    </div>
-
-    <div class="agenda-etapa">
-      <h3>Horários cadastrados</h3>
-      <div id="listaHorarios" class="lista-admin"></div>
-    </div>
-
-    <button class="btn-confirmar" onclick="salvarHorarios()">
-      Salvar alterações
-    </button>
   </div>
 </section>
 
@@ -80,10 +134,7 @@
     fotos: [
       "./fotos/foto01.png",
       "./fotos/foto02.png",
-      "./fotos/foto03.png",
-      "./fotos/foto04.png",
-      "./fotos/foto05.png",
-      "./fotos/foto06.png"
+      "./fotos/foto03.png"
     ]
   };
 
@@ -101,12 +152,16 @@
 
     setTimeout(() => {
       msg.classList.remove("ativo");
-    }, 2500);
+    }, 2600);
+  }
+
+  function salvarStoragePortfolio() {
+    localStorage.setItem("portfolioConfig", JSON.stringify(portfolioConfig));
   }
 
   function renderizarPortfolioAdmin() {
-    document.getElementById("portfolioTituloAdmin").value = portfolioConfig.titulo;
-    document.getElementById("portfolioSubtituloAdmin").value = portfolioConfig.subtitulo;
+    document.getElementById("portfolioTituloAdmin").value = portfolioConfig.titulo || "";
+    document.getElementById("portfolioSubtituloAdmin").value = portfolioConfig.subtitulo || "";
 
     renderizarServicosAdmin("aplicacoes", "listaAplicacoesAdmin");
     renderizarServicosAdmin("manutencoes", "listaManutencoesAdmin");
@@ -119,20 +174,52 @@
 
     portfolioConfig[tipo].forEach((item, index) => {
       const div = document.createElement("div");
-      div.className = "linha-admin-servico";
+      div.className = "admin-servico-item";
 
       div.innerHTML = `
-        <input type="text" value="${item.nome}" placeholder="Nome do serviço" onchange="editarServico('${tipo}', ${index}, 'nome', this.value)">
-        <input type="text" value="${item.preco}" placeholder="Preço" onchange="editarServico('${tipo}', ${index}, 'preco', this.value)">
-        <button onclick="excluirServico('${tipo}', ${index})">Excluir</button>
+        <div>
+          <label>Serviço</label>
+          <input id="${tipo}-nome-${index}" type="text" value="${item.nome}" disabled>
+        </div>
+
+        <div>
+          <label>Valor</label>
+          <input id="${tipo}-preco-${index}" type="text" value="${item.preco}" disabled>
+        </div>
+
+        <div class="admin-acoes-item">
+          <button class="admin-edit" onclick="editarLinhaServico('${tipo}', ${index})">Editar</button>
+          <button class="admin-save-small" onclick="salvarLinhaServico('${tipo}', ${index})">Salvar</button>
+          <button class="admin-delete" onclick="excluirServico('${tipo}', ${index})">Excluir</button>
+        </div>
       `;
 
       container.appendChild(div);
     });
   }
 
-  function editarServico(tipo, index, campo, valor) {
-    portfolioConfig[tipo][index][campo] = valor;
+  function editarLinhaServico(tipo, index) {
+    document.getElementById(`${tipo}-nome-${index}`).disabled = false;
+    document.getElementById(`${tipo}-preco-${index}`).disabled = false;
+    document.getElementById(`${tipo}-nome-${index}`).focus();
+    mostrarMensagem("Agora você pode editar este serviço.");
+  }
+
+  function salvarLinhaServico(tipo, index) {
+    const nome = document.getElementById(`${tipo}-nome-${index}`).value.trim();
+    const preco = document.getElementById(`${tipo}-preco-${index}`).value.trim();
+
+    if (!nome || !preco) {
+      mostrarMensagem("Preencha o nome e o valor.");
+      return;
+    }
+
+    portfolioConfig[tipo][index].nome = nome;
+    portfolioConfig[tipo][index].preco = preco;
+
+    salvarStoragePortfolio();
+    renderizarPortfolioAdmin();
+    mostrarMensagem("Serviço salvo com sucesso!");
   }
 
   function adicionarServico(tipo) {
@@ -141,12 +228,22 @@
       preco: "R$ 0,00"
     });
 
+    salvarStoragePortfolio();
     renderizarPortfolioAdmin();
+    mostrarMensagem("Serviço adicionado. Clique em Editar para alterar.");
   }
 
   function excluirServico(tipo, index) {
+    const nome = portfolioConfig[tipo][index].nome;
+
+    if (!confirm(`Tem certeza que deseja excluir "${nome}"?`)) {
+      return;
+    }
+
     portfolioConfig[tipo].splice(index, 1);
+    salvarStoragePortfolio();
     renderizarPortfolioAdmin();
+    mostrarMensagem("Serviço excluído.");
   }
 
   function renderizarFotosPortfolioAdmin() {
@@ -155,36 +252,73 @@
 
     portfolioConfig.fotos.forEach((foto, index) => {
       const div = document.createElement("div");
-      div.className = "linha-admin-servico";
+      div.className = "admin-foto-item";
 
       div.innerHTML = `
-        <input type="text" value="${foto}" placeholder="./fotos/foto01.png" onchange="editarFotoPortfolio(${index}, this.value)">
-        <button onclick="excluirFotoPortfolio(${index})">Excluir</button>
+        <div class="admin-preview">
+          <img src="${foto}" alt="Prévia da foto">
+        </div>
+
+        <div>
+          <label>Caminho da foto</label>
+          <input id="foto-${index}" type="text" value="${foto}" disabled>
+        </div>
+
+        <div class="admin-acoes-item">
+          <button class="admin-edit" onclick="editarFotoLinha(${index})">Editar</button>
+          <button class="admin-save-small" onclick="salvarFotoLinha(${index})">Salvar</button>
+          <button class="admin-delete" onclick="excluirFotoPortfolio(${index})">Excluir</button>
+        </div>
       `;
 
       lista.appendChild(div);
     });
   }
 
-  function editarFotoPortfolio(index, valor) {
+  function editarFotoLinha(index) {
+    document.getElementById(`foto-${index}`).disabled = false;
+    document.getElementById(`foto-${index}`).focus();
+    mostrarMensagem("Agora você pode editar o caminho da foto.");
+  }
+
+  function salvarFotoLinha(index) {
+    const valor = document.getElementById(`foto-${index}`).value.trim();
+
+    if (!valor) {
+      mostrarMensagem("Preencha o caminho da foto.");
+      return;
+    }
+
     portfolioConfig.fotos[index] = valor;
+
+    salvarStoragePortfolio();
+    renderizarFotosPortfolioAdmin();
+    mostrarMensagem("Foto salva com sucesso!");
   }
 
   function adicionarFotoPortfolio() {
     portfolioConfig.fotos.push("./fotos/foto01.png");
+    salvarStoragePortfolio();
     renderizarFotosPortfolioAdmin();
+    mostrarMensagem("Foto adicionada. Clique em Editar para alterar.");
   }
 
   function excluirFotoPortfolio(index) {
+    if (!confirm("Tem certeza que deseja excluir esta foto?")) {
+      return;
+    }
+
     portfolioConfig.fotos.splice(index, 1);
+    salvarStoragePortfolio();
     renderizarFotosPortfolioAdmin();
+    mostrarMensagem("Foto excluída.");
   }
 
   function salvarPortfolio() {
-    portfolioConfig.titulo = document.getElementById("portfolioTituloAdmin").value;
-    portfolioConfig.subtitulo = document.getElementById("portfolioSubtituloAdmin").value;
+    portfolioConfig.titulo = document.getElementById("portfolioTituloAdmin").value.trim();
+    portfolioConfig.subtitulo = document.getElementById("portfolioSubtituloAdmin").value.trim();
 
-    localStorage.setItem("portfolioConfig", JSON.stringify(portfolioConfig));
+    salvarStoragePortfolio();
     mostrarMensagem("Portfólio salvo com sucesso!");
   }
 
@@ -228,7 +362,7 @@
     document.getElementById("adminHorario").value = disponibilidades[index].horario;
 
     editandoIndex = index;
-    mostrarMensagem("Edite os campos e clique em Adicionar horário.");
+    mostrarMensagem("Altere a data/horário e clique em Adicionar horário.");
   }
 
   function alternarStatus(index) {
@@ -237,10 +371,13 @@
 
     salvarAutomatico();
     renderizarHorarios();
+    mostrarMensagem("Status atualizado.");
   }
 
   function excluirHorario(index) {
-    if (!confirm("Tem certeza que deseja excluir este horário?")) return;
+    if (!confirm("Tem certeza que deseja excluir este horário?")) {
+      return;
+    }
 
     disponibilidades.splice(index, 1);
     salvarAutomatico();
@@ -250,11 +387,6 @@
 
   function salvarAutomatico() {
     localStorage.setItem("disponibilidades", JSON.stringify(disponibilidades));
-  }
-
-  function salvarHorarios() {
-    salvarAutomatico();
-    mostrarMensagem("Alterações salvas com sucesso!");
   }
 
   function formatarData(data) {
@@ -267,33 +399,35 @@
     lista.innerHTML = "";
 
     if (disponibilidades.length === 0) {
-      lista.innerHTML = "<p class='aviso'>Nenhum horário cadastrado.</p>";
+      lista.innerHTML = "<p class='admin-vazio'>Nenhum horário cadastrado.</p>";
       return;
     }
 
-    disponibilidades.forEach((item, index) => {
-      const card = document.createElement("div");
-      card.className = `card-horario-admin ${item.status === "ocupado" ? "ocupado" : ""}`;
+    disponibilidades
+      .sort((a, b) => `${a.data}${a.horario}`.localeCompare(`${b.data}${b.horario}`))
+      .forEach((item, index) => {
+        const card = document.createElement("div");
+        card.className = `admin-horario-item ${item.status === "ocupado" ? "ocupado" : ""}`;
 
-      const textoStatus = item.status === "ocupado" ? "Ocupado" : "Disponível";
-      const botaoStatus = item.status === "ocupado" ? "Liberar" : "Ocupar";
+        const textoStatus = item.status === "ocupado" ? "Ocupado" : "Disponível";
+        const botaoStatus = item.status === "ocupado" ? "Liberar" : "Ocupar";
 
-      card.innerHTML = `
-        <div>
-          <strong>${formatarData(item.data)}</strong>
-          <span>${item.horario}</span>
-          <small>${textoStatus}</small>
-        </div>
+        card.innerHTML = `
+          <div>
+            <strong>${formatarData(item.data)}</strong>
+            <span>${item.horario}</span>
+            <small>${textoStatus}</small>
+          </div>
 
-        <div class="acoes-admin">
-          <button onclick="editarHorario(${index})">Editar</button>
-          <button onclick="alternarStatus(${index})" class="${item.status === "ocupado" ? "liberar" : "ocupar"}">${botaoStatus}</button>
-          <button onclick="excluirHorario(${index})" class="excluir">Excluir</button>
-        </div>
-      `;
+          <div class="admin-horario-acoes">
+            <button onclick="editarHorario(${index})">Editar</button>
+            <button onclick="alternarStatus(${index})">${botaoStatus}</button>
+            <button class="danger" onclick="excluirHorario(${index})">Excluir</button>
+          </div>
+        `;
 
-      lista.appendChild(card);
-    });
+        lista.appendChild(card);
+      });
   }
 
   renderizarPortfolioAdmin();
