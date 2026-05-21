@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Andressa Santos Nails Studio</title>
+  <title>Andressa Santos Nail Designer</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
@@ -12,7 +12,7 @@
 <body>
 
 <header class="topo">
-  <h1>Andressa Santos Nails Studio</h1>
+  <h1>Andressa Santos Nail Designer</h1>
 
   <nav>
     <a href="#" onclick="mostrarHome()">Início</a>
@@ -89,30 +89,21 @@
 
       <div class="servico-opcoes">
         <button class="servico-btn ativo" data-servico="Manicure">Manicure</button>
-        <button class="servico-btn" data-servico="Pedicure">Pedicure</button>
         <button class="servico-btn" data-servico="Alongamento">Alongamento</button>
         <button class="servico-btn" data-servico="Nail Art">Nail Art</button>
       </div>
     </div>
 
     <div class="agenda-etapa">
-      <h3>2. Data</h3>
-      <input type="date" id="dataAgenda">
-    </div>
+  <h3>2. Dias e horários disponíveis</h3>
+  <div id="datasDisponiveis" class="datas-disponiveis"></div>
+</div>
 
-    <div class="agenda-etapa">
-      <h3>3. Horários disponíveis</h3>
-
-      <div id="horariosDisponiveis" class="horarios">
-        <p class="aviso">Escolha uma data para ver os horários.</p>
-      </div>
-    </div>
 
     <div class="agenda-etapa dados">
-      <h3>4. Seus dados</h3>
+      <h3>3. Seus dados</h3>
 
       <input type="text" id="clienteNome" placeholder="Seu nome">
-      <input type="tel" id="clienteTelefone" placeholder="Seu WhatsApp">
 
       <button onclick="confirmarAgendamento()" class="btn-confirmar">
         Confirmar agendamento

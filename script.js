@@ -1,15 +1,11 @@
-const horariosFixos = [
-  "19:00",
-  "20:00",
-  "21:00",
-];
-
 let horarioSelecionado = "";
 let servicoSelecionado = "Manicure";
+let dataSelecionada = "";
 
 function mostrarAgenda() {
   document.getElementById("home").classList.add("escondido");
   document.getElementById("agenda").classList.remove("escondido");
+  carregarDatasEHorarios();
   window.scrollTo(0, 0);
 }
 
@@ -24,40 +20,82 @@ const botoesServico = document.querySelectorAll(".servico-btn");
 botoesServico.forEach(botao => {
   botao.addEventListener("click", () => {
     botoesServico.forEach(btn => btn.classList.remove("ativo"));
-
     botao.classList.add("ativo");
     servicoSelecionado = botao.dataset.servico;
   });
 });
 
-const dataAgenda = document.getElementById("dataAgenda");
-
-dataAgenda.addEventListener("change", () => {
-  carregarHorarios();
-});
-
-function carregarHorarios() {
-  const container = document.getElementById("horariosDisponiveis");
-
+function carregarDatasEHorarios() {
+  const container = document.getElementById("datasDisponiveis");
   container.innerHTML = "";
+
   horarioSelecionado = "";
+  dataSelecionada = "";
 
-  horariosFixos.forEach(horario => {
-    const botao = document.createElement("button");
+  let disponibilidades = JSON.parse(localStorage.getItem("disponibilidades")) || [];
 
-    botao.classList.add("horario-btn");
-    botao.innerText = horario;
+  disponibilidades = disponibilidades.map(item => ({
+    ...item,
+    status: item.status || "disponivel"
+  }));
 
-    botao.onclick = () => {
-      document.querySelectorAll(".horario-btn").forEach(btn => {
-        btn.classList.remove("ativo");
-      });
+  if (disponibilidades.length === 0) {
+    container.innerHTML = "<p class='aviso'>Nenhum horário disponível no momento.</p>";
+    return;
+  }
 
-      botao.classList.add("ativo");
-      horarioSelecionado = horario;
-    };
+  const datasAgrupadas = {};
 
-    container.appendChild(botao);
+  disponibilidades.forEach(item => {
+    if (!datasAgrupadas[item.data]) {
+      datasAgrupadas[item.data] = [];
+    }
+
+    datasAgrupadas[item.data].push(item);
+  });
+
+  Object.keys(datasAgrupadas).forEach(data => {
+    const bloco = document.createElement("div");
+    bloco.classList.add("bloco-dia");
+
+    const titulo = document.createElement("h4");
+    titulo.innerText = formatarDataComDia(data);
+
+    const horariosDiv = document.createElement("div");
+    horariosDiv.classList.add("horarios");
+
+    datasAgrupadas[data].forEach(item => {
+      const botao = document.createElement("button");
+
+      botao.classList.add("horario-btn");
+
+      if (item.status === "ocupado") {
+        botao.classList.add("ocupado");
+      }
+
+      botao.innerText = item.horario;
+
+      botao.onclick = () => {
+        if (item.status === "ocupado") {
+          mostrarAvisoCliente("Este horário já está ocupado. Escolha outro horário disponível.");
+         return;
+        }
+
+        document.querySelectorAll(".horario-btn").forEach(btn => {
+          btn.classList.remove("ativo");
+        });
+
+        botao.classList.add("ativo");
+        dataSelecionada = data;
+        horarioSelecionado = item.horario;
+      };
+
+      horariosDiv.appendChild(botao);
+    });
+
+    bloco.appendChild(titulo);
+    bloco.appendChild(horariosDiv);
+    container.appendChild(bloco);
   });
 }
 
@@ -66,26 +104,40 @@ function formatarData(data) {
   return `${partes[2]}/${partes[1]}/${partes[0]}`;
 }
 
+function formatarDataComDia(data) {
+  const dias = [
+    "Domingo",
+    "Segunda-feira",
+    "Terça-feira",
+    "Quarta-feira",
+    "Quinta-feira",
+    "Sexta-feira",
+    "Sábado"
+  ];
+
+  const dataObj = new Date(data + "T00:00:00");
+  const diaSemana = dias[dataObj.getDay()];
+
+  return `${diaSemana} • ${formatarData(data)}`;
+}
+
 function confirmarAgendamento() {
   const nome = document.getElementById("clienteNome").value.trim();
-  const telefoneCliente = document.getElementById("clienteTelefone").value.trim();
-  const data = document.getElementById("dataAgenda").value;
 
-  if (!nome || !telefoneCliente || !data || !horarioSelecionado) {
-    alert("Preencha todos os campos.");
+  if (!nome || !dataSelecionada || !horarioSelecionado) {
+    alert("Preencha seu nome e escolha um horário disponível.");
     return;
   }
 
   const telefoneStudio = "5551997529440";
-  const dataFormatada = formatarData(data);
+  const dataFormatada = formatarData(dataSelecionada);
 
   const mensagem =
-`✨ *NOVO AGENDAMENTO* ✨
+`✨ *NOVO AGENDAMENTO*
 
-💅 *Andressa Santos Nails Studio*
+💅 *Andressa Santos Nail Designer*
 
-👩 Cliente: *${nome}*
-📞 WhatsApp: ${telefoneCliente}
+👤 Cliente: *${nome}*
 
 📌 Serviço: *${servicoSelecionado}*
 📅 Data: *${dataFormatada}*
@@ -96,4 +148,24 @@ function confirmarAgendamento() {
   const link = `https://wa.me/${telefoneStudio}?text=${encodeURIComponent(mensagem)}`;
 
   window.open(link, "_blank");
+}
+
+function mostrarAvisoCliente(texto) {
+  let aviso = document.getElementById("avisoCliente");
+
+  if (!aviso) {
+    aviso = document.createElement("div");
+    aviso.id = "avisoCliente";
+    aviso.className = "aviso-cliente";
+
+    const agendaBox = document.querySelector(".agenda-box");
+    agendaBox.prepend(aviso);
+  }
+
+  aviso.innerText = texto;
+  aviso.classList.add("ativo");
+
+  setTimeout(() => {
+    aviso.classList.remove("ativo");
+  }, 3000);
 }

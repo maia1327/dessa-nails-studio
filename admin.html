@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel ADM - Andressa Santos</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<section class="agenda">
+  <div class="agenda-box">
+    <h2>Painel ADM</h2>
+    <p>Cadastre, edite, ocupe, libere ou exclua os horários.</p>
+
+    <div id="mensagemAdmin" class="mensagem-admin"></div>
+
+    <div class="agenda-etapa">
+      <h3>Adicionar disponibilidade</h3>
+
+      <input type="date" id="adminData">
+      <input type="time" id="adminHorario">
+
+      <button class="btn-confirmar" onclick="adicionarHorario()">
+        Adicionar horário
+      </button>
+    </div>
+
+    <div class="agenda-etapa">
+      <h3>Horários cadastrados</h3>
+      <div id="listaHorarios" class="lista-admin"></div>
+    </div>
+
+    <button class="btn-confirmar" onclick="salvarHorarios()">
+      Salvar alterações
+    </button>
+  </div>
+</section>
+
+<script>
+  let disponibilidades = JSON.parse(localStorage.getItem("disponibilidades")) || [];
+  let editandoIndex = null;
+
+  disponibilidades = disponibilidades.map(item => ({
+    ...item,
+    status: item.status || "disponivel"
+  }));
+
+  function mostrarMensagem(texto) {
+    const msg = document.getElementById("mensagemAdmin");
+    msg.innerText = texto;
+    msg.classList.add("ativo");
+
+    setTimeout(() => {
+      msg.classList.remove("ativo");
+    }, 2500);
+  }
+
+  function adicionarHorario() {
+    const data = document.getElementById("adminData").value;
+    const horario = document.getElementById("adminHorario").value;
+
+    if (!data || !horario) {
+      mostrarMensagem("Escolha uma data e um horário.");
+      return;
+    }
+
+    if (editandoIndex !== null) {
+      disponibilidades[editandoIndex] = {
+        ...disponibilidades[editandoIndex],
+        data,
+        horario
+      };
+
+      editandoIndex = null;
+      mostrarMensagem("Horário editado com sucesso!");
+    } else {
+      disponibilidades.push({
+        data,
+        horario,
+        status: "disponivel"
+      });
+
+      mostrarMensagem("Horário adicionado com sucesso!");
+    }
+
+    document.getElementById("adminData").value = "";
+    document.getElementById("adminHorario").value = "";
+
+    salvarAutomatico();
+    renderizarHorarios();
+  }
+
+  function editarHorario(index) {
+    document.getElementById("adminData").value = disponibilidades[index].data;
+    document.getElementById("adminHorario").value = disponibilidades[index].horario;
+
+    editandoIndex = index;
+    mostrarMensagem("Edite os campos e clique em Adicionar horário.");
+  }
+
+  function alternarStatus(index) {
+    if (disponibilidades[index].status === "ocupado") {
+      disponibilidades[index].status = "disponivel";
+      mostrarMensagem("Horário liberado.");
+    } else {
+      disponibilidades[index].status = "ocupado";
+      mostrarMensagem("Horário marcado como ocupado.");
+    }
+
+    salvarAutomatico();
+    renderizarHorarios();
+  }
+
+  function excluirHorario(index) {
+    if (!confirm("Tem certeza que deseja excluir este horário?")) {
+      return;
+    }
+
+    disponibilidades.splice(index, 1);
+    salvarAutomatico();
+    renderizarHorarios();
+    mostrarMensagem("Horário excluído.");
+  }
+
+  function salvarAutomatico() {
+    localStorage.setItem("disponibilidades", JSON.stringify(disponibilidades));
+  }
+
+  function salvarHorarios() {
+    salvarAutomatico();
+    mostrarMensagem("Alterações salvas com sucesso!");
+  }
+
+  function formatarData(data) {
+    const partes = data.split("-");
+    return `${partes[2]}/${partes[1]}/${partes[0]}`;
+  }
+
+  function renderizarHorarios() {
+    const lista = document.getElementById("listaHorarios");
+    lista.innerHTML = "";
+
+    if (disponibilidades.length === 0) {
+      lista.innerHTML = "<p class='aviso'>Nenhum horário cadastrado.</p>";
+      return;
+    }
+
+    disponibilidades.forEach((item, index) => {
+      const card = document.createElement("div");
+      card.className = `card-horario-admin ${item.status === "ocupado" ? "ocupado" : ""}`;
+
+      const textoStatus = item.status === "ocupado" ? "Ocupado" : "Disponível";
+      const botaoStatus = item.status === "ocupado" ? "Liberar" : "Ocupar";
+
+      card.innerHTML = `
+        <div>
+          <strong>${formatarData(item.data)}</strong>
+          <span>${item.horario}</span>
+          <small>${textoStatus}</small>
+        </div>
+
+        <div class="acoes-admin">
+          <button onclick="editarHorario(${index})">Editar</button>
+          <button onclick="alternarStatus(${index})" class="${item.status === "ocupado" ? "liberar" : "ocupar"}">${botaoStatus}</button>
+          <button onclick="excluirHorario(${index})" class="excluir">Excluir</button>
+        </div>
+      `;
+
+      lista.appendChild(card);
+    });
+  }
+
+  renderizarHorarios();
+</script>
+
+</body>
+</html>

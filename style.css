@@ -185,6 +185,7 @@ body {
   line-height: 0.85;
   text-align: center;
   background: linear-gradient(145deg, #f8df8a, #bd8b2f, #7d581d);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   filter:
@@ -386,4 +387,123 @@ body {
   .texto-banner p {
     font-size: 18px;
   }
+}
+
+.mensagem-admin {
+  display: none;
+  margin: 18px 0;
+  padding: 14px 18px;
+  border-radius: 18px;
+  background: #f4e6d8;
+  color: #5f4639;
+  font-weight: 800;
+  border: 1px solid #d8c0ad;
+}
+
+.mensagem-admin.ativo {
+  display: block;
+}
+
+.lista-admin {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.card-horario-admin {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 20px;
+  background: #fbf6f0;
+  border: 1px solid #d8c0ad;
+}
+
+.card-horario-admin strong {
+  display: block;
+  color: #2d201b;
+}
+
+.card-horario-admin span {
+  color: #7d614d;
+  font-weight: 800;
+}
+
+.acoes-admin {
+  display: flex;
+  gap: 8px;
+}
+
+.acoes-admin button {
+  border: none;
+  padding: 10px 14px;
+  border-radius: 20px;
+  background: #8b6b54;
+  color: white;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.acoes-admin .excluir {
+  background: #8f3f35;
+}
+
+.horario-btn.ocupado {
+  background: #8f3f35;
+  color: white;
+  border-color: #8f3f35;
+  opacity: 0.85;
+  cursor: not-allowed;
+}
+
+.horario-btn.ocupado::after {
+  content: " ocupado";
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.card-horario-admin.ocupado {
+  background: #fff0ee;
+  border-color: #b55a50;
+}
+
+.card-horario-admin small {
+  display: block;
+  margin-top: 4px;
+  font-weight: 800;
+  color: #8b6b54;
+}
+
+.card-horario-admin.ocupado small {
+  color: #8f3f35;
+}
+
+.acoes-admin .ocupar {
+  background: #8f3f35;
+}
+
+.acoes-admin .liberar {
+  background: #3f7f5f;
+}
+
+.acoes-admin .excluir {
+  background: #2d201b;
+}
+
+.aviso-cliente {
+  display: none;
+  margin-bottom: 18px;
+  padding: 14px 18px;
+  border-radius: 18px;
+  background: #fff0ee;
+  border: 1px solid #b55a50;
+  color: #8f3f35;
+  font-weight: 800;
+  text-align: center;
+}
+
+.aviso-cliente.ativo {
+  display: block;
 }
