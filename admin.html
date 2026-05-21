@@ -11,20 +11,30 @@
 <section class="agenda">
   <div class="agenda-box">
     <h2>Painel ADM</h2>
-    <p>Cadastre horários e fotos dos trabalhos.</p>
+    <p>Edite serviços, valores, fotos e horários.</p>
 
     <div id="mensagemAdmin" class="mensagem-admin"></div>
 
     <div class="agenda-etapa">
-      <h3>Adicionar fotos dos trabalhos</h3>
+      <h3>Portfólio / Tabela de Serviços</h3>
 
-      <input type="file" id="adminFotos" accept="image/*" multiple>
+      <input type="text" id="portfolioTituloAdmin" placeholder="Título">
+      <input type="text" id="portfolioSubtituloAdmin" placeholder="Subtítulo">
 
-      <button class="btn-confirmar" onclick="adicionarFotos()">
-        Adicionar fotos
-      </button>
+      <h3>Aplicações</h3>
+      <div id="listaAplicacoesAdmin"></div>
+      <button class="btn-confirmar" onclick="adicionarServico('aplicacoes')">Adicionar aplicação</button>
 
-      <div id="listaFotosAdmin" class="lista-fotos-admin"></div>
+      <h3>Manutenções</h3>
+      <div id="listaManutencoesAdmin"></div>
+      <button class="btn-confirmar" onclick="adicionarServico('manutencoes')">Adicionar manutenção</button>
+
+      <h3>Fotos do portfólio</h3>
+      <p class="aviso">Use nomes como: ./fotos/foto01.png</p>
+      <div id="listaFotosPortfolioAdmin"></div>
+      <button class="btn-confirmar" onclick="adicionarFotoPortfolio()">Adicionar foto</button>
+
+      <button class="btn-confirmar" onclick="salvarPortfolio()">Salvar portfólio</button>
     </div>
 
     <div class="agenda-etapa">
@@ -51,8 +61,33 @@
 
 <script>
   let disponibilidades = JSON.parse(localStorage.getItem("disponibilidades")) || [];
-  let fotosTrabalhos = JSON.parse(localStorage.getItem("fotosTrabalhos")) || [];
   let editandoIndex = null;
+
+  const portfolioPadrao = {
+    titulo: "Tabela de Serviços",
+    subtitulo: "Beleza, cuidado e sofisticação em cada detalhe.",
+    aplicacoes: [
+      { nome: "Molde F1", preco: "R$ 120,00" },
+      { nome: "Fibra de vidro", preco: "R$ 130,00" },
+      { nome: "Banho de gel", preco: "R$ 90,00" },
+      { nome: "Blindagem", preco: "R$ 80,00" },
+      { nome: "Esmaltação em Gel", preco: "R$ 60,00" }
+    ],
+    manutencoes: [
+      { nome: "Alongamento", preco: "R$ 90,00" },
+      { nome: "Banho de gel", preco: "R$ 60,00" }
+    ],
+    fotos: [
+      "./fotos/foto01.png",
+      "./fotos/foto02.png",
+      "./fotos/foto03.png",
+      "./fotos/foto04.png",
+      "./fotos/foto05.png",
+      "./fotos/foto06.png"
+    ]
+  };
+
+  let portfolioConfig = JSON.parse(localStorage.getItem("portfolioConfig")) || portfolioPadrao;
 
   disponibilidades = disponibilidades.map(item => ({
     ...item,
@@ -69,67 +104,88 @@
     }, 2500);
   }
 
-  function adicionarFotos() {
-    const input = document.getElementById("adminFotos");
-    const arquivos = Array.from(input.files);
+  function renderizarPortfolioAdmin() {
+    document.getElementById("portfolioTituloAdmin").value = portfolioConfig.titulo;
+    document.getElementById("portfolioSubtituloAdmin").value = portfolioConfig.subtitulo;
 
-    if (arquivos.length === 0) {
-      mostrarMensagem("Selecione uma ou mais fotos.");
-      return;
-    }
-
-    let carregadas = 0;
-
-    arquivos.forEach(arquivo => {
-      const leitor = new FileReader();
-
-      leitor.onload = function(evento) {
-        fotosTrabalhos.push(evento.target.result);
-        carregadas++;
-
-        if (carregadas === arquivos.length) {
-          localStorage.setItem("fotosTrabalhos", JSON.stringify(fotosTrabalhos));
-          input.value = "";
-          renderizarFotosAdmin();
-          mostrarMensagem("Fotos adicionadas com sucesso!");
-        }
-      };
-
-      leitor.readAsDataURL(arquivo);
-    });
+    renderizarServicosAdmin("aplicacoes", "listaAplicacoesAdmin");
+    renderizarServicosAdmin("manutencoes", "listaManutencoesAdmin");
+    renderizarFotosPortfolioAdmin();
   }
 
-  function excluirFoto(index) {
-    if (!confirm("Tem certeza que deseja excluir esta foto?")) {
-      return;
-    }
+  function renderizarServicosAdmin(tipo, containerId) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = "";
 
-    fotosTrabalhos.splice(index, 1);
-    localStorage.setItem("fotosTrabalhos", JSON.stringify(fotosTrabalhos));
-    renderizarFotosAdmin();
-    mostrarMensagem("Foto excluída.");
-  }
+    portfolioConfig[tipo].forEach((item, index) => {
+      const div = document.createElement("div");
+      div.className = "linha-admin-servico";
 
-  function renderizarFotosAdmin() {
-    const lista = document.getElementById("listaFotosAdmin");
-    lista.innerHTML = "";
-
-    if (fotosTrabalhos.length === 0) {
-      lista.innerHTML = "<p class='aviso'>Nenhuma foto cadastrada.</p>";
-      return;
-    }
-
-    fotosTrabalhos.forEach((foto, index) => {
-      const card = document.createElement("div");
-      card.className = "card-foto-admin";
-
-      card.innerHTML = `
-        <img src="${foto}" alt="Foto do trabalho">
-        <button onclick="excluirFoto(${index})">Excluir</button>
+      div.innerHTML = `
+        <input type="text" value="${item.nome}" placeholder="Nome do serviço" onchange="editarServico('${tipo}', ${index}, 'nome', this.value)">
+        <input type="text" value="${item.preco}" placeholder="Preço" onchange="editarServico('${tipo}', ${index}, 'preco', this.value)">
+        <button onclick="excluirServico('${tipo}', ${index})">Excluir</button>
       `;
 
-      lista.appendChild(card);
+      container.appendChild(div);
     });
+  }
+
+  function editarServico(tipo, index, campo, valor) {
+    portfolioConfig[tipo][index][campo] = valor;
+  }
+
+  function adicionarServico(tipo) {
+    portfolioConfig[tipo].push({
+      nome: "Novo serviço",
+      preco: "R$ 0,00"
+    });
+
+    renderizarPortfolioAdmin();
+  }
+
+  function excluirServico(tipo, index) {
+    portfolioConfig[tipo].splice(index, 1);
+    renderizarPortfolioAdmin();
+  }
+
+  function renderizarFotosPortfolioAdmin() {
+    const lista = document.getElementById("listaFotosPortfolioAdmin");
+    lista.innerHTML = "";
+
+    portfolioConfig.fotos.forEach((foto, index) => {
+      const div = document.createElement("div");
+      div.className = "linha-admin-servico";
+
+      div.innerHTML = `
+        <input type="text" value="${foto}" placeholder="./fotos/foto01.png" onchange="editarFotoPortfolio(${index}, this.value)">
+        <button onclick="excluirFotoPortfolio(${index})">Excluir</button>
+      `;
+
+      lista.appendChild(div);
+    });
+  }
+
+  function editarFotoPortfolio(index, valor) {
+    portfolioConfig.fotos[index] = valor;
+  }
+
+  function adicionarFotoPortfolio() {
+    portfolioConfig.fotos.push("./fotos/foto01.png");
+    renderizarFotosPortfolioAdmin();
+  }
+
+  function excluirFotoPortfolio(index) {
+    portfolioConfig.fotos.splice(index, 1);
+    renderizarFotosPortfolioAdmin();
+  }
+
+  function salvarPortfolio() {
+    portfolioConfig.titulo = document.getElementById("portfolioTituloAdmin").value;
+    portfolioConfig.subtitulo = document.getElementById("portfolioSubtituloAdmin").value;
+
+    localStorage.setItem("portfolioConfig", JSON.stringify(portfolioConfig));
+    mostrarMensagem("Portfólio salvo com sucesso!");
   }
 
   function adicionarHorario() {
@@ -176,22 +232,15 @@
   }
 
   function alternarStatus(index) {
-    if (disponibilidades[index].status === "ocupado") {
-      disponibilidades[index].status = "disponivel";
-      mostrarMensagem("Horário liberado.");
-    } else {
-      disponibilidades[index].status = "ocupado";
-      mostrarMensagem("Horário marcado como ocupado.");
-    }
+    disponibilidades[index].status =
+      disponibilidades[index].status === "ocupado" ? "disponivel" : "ocupado";
 
     salvarAutomatico();
     renderizarHorarios();
   }
 
   function excluirHorario(index) {
-    if (!confirm("Tem certeza que deseja excluir este horário?")) {
-      return;
-    }
+    if (!confirm("Tem certeza que deseja excluir este horário?")) return;
 
     disponibilidades.splice(index, 1);
     salvarAutomatico();
@@ -247,7 +296,7 @@
     });
   }
 
-  renderizarFotosAdmin();
+  renderizarPortfolioAdmin();
   renderizarHorarios();
 </script>
 

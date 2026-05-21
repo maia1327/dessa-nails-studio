@@ -580,76 +580,298 @@ body {
 
 .galeria-home {
   position: absolute;
-  left: 60px;
-  top: 95px;
-  width: 430px;
-  height: 360px;
-  z-index: 8;
+  left: 30px;
+  top: 40px;
+  width: 520px;
+  height: 430px;
+  z-index: 15;
 }
 
 .foto-card {
   position: absolute;
   background: white;
-  padding: 7px;
-  border-radius: 22px;
-  box-shadow: 0 18px 45px rgba(72, 45, 26, 0.22);
-  transition: 0.3s ease;
+  padding: 10px 10px 38px 10px;
+  border-radius: 6px;
+  box-shadow: 0 18px 35px rgba(0,0,0,0.22);
+  overflow: hidden;
+  transition: 0.35s ease;
 }
 
 .foto-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 16px;
   display: block;
 }
 
+.foto-card:hover {
+  transform: scale(1.05) rotate(0deg);
+  z-index: 30;
+}
+
+/* FOTO 1 */
 .foto-card-1 {
-  width: 250px;
-  height: 190px;
-  left: 20px;
+  width: 180px;
+  height: 210px;
+  left: 10px;
+  top: 10px;
+  transform: rotate(-9deg);
+  z-index: 4;
+}
+
+/* FOTO 2 */
+.foto-card-2 {
+  width: 180px;
+  height: 210px;
+  left: 170px;
   top: 0;
+  transform: rotate(6deg);
+  z-index: 5;
+}
+
+/* FOTO 3 */
+.foto-card-3 {
+  width: 170px;
+  height: 200px;
+  left: 330px;
+  top: 20px;
   transform: rotate(-5deg);
   z-index: 4;
 }
 
-.foto-card-2 {
-  width: 250px;
-  height: 190px;
-  left: 210px;
-  top: 5px;
-  transform: rotate(4deg);
-  z-index: 3;
-}
-
-.foto-card-3 {
-  width: 210px;
-  height: 190px;
-  left: 0;
-  top: 185px;
-  transform: rotate(4deg);
-  z-index: 5;
-}
-
+/* FOTO 4 */
 .foto-card-4 {
-  width: 240px;
-  height: 190px;
-  left: 185px;
-  top: 185px;
-  transform: rotate(-3deg);
+  width: 175px;
+  height: 205px;
+  left: 60px;
+  top: 190px;
+  transform: rotate(5deg);
   z-index: 6;
 }
 
-.foto-card:hover {
-  transform: scale(1.04) rotate(0deg);
-  z-index: 20;
+/* FOTO 5 */
+.foto-card-5 {
+  width: 180px;
+  height: 205px;
+  left: 245px;
+  top: 200px;
+  transform: rotate(-7deg);
+  z-index: 7;
 }
 
-@media (max-width: 900px) {
-  .galeria-home {
-    left: 50%;
-    top: 250px;
-    transform: translateX(-50%) scale(0.78);
-    transform-origin: top center;
-  }
+.texto-banner {
+  right: 35px;
+  width: 300px;
+}
+.galeria-home {
+  position: absolute;
+  left: 30px;
+  top: 40px;
+  width: 520px;
+  height: 430px;
+  z-index: 15;
+}
+
+.foto-card {
+  position: absolute;
+  background: white;
+  padding: 10px 10px 38px 10px;
+  border-radius: 6px;
+  box-shadow: 0 18px 35px rgba(0,0,0,0.22);
+  overflow: hidden;
+  transition: 0.35s ease;
+}
+
+.foto-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.foto-card:hover {
+  transform: scale(1.05) rotate(0deg);
+  z-index: 30;
+}
+
+/* FOTO 1 */
+.foto-card-1 {
+  width: 180px;
+  height: 210px;
+  left: 10px;
+  top: 10px;
+  transform: rotate(-9deg);
+  z-index: 4;
+}
+
+/* FOTO 2 */
+.foto-card-2 {
+  width: 180px;
+  height: 210px;
+  left: 170px;
+  top: 0;
+  transform: rotate(6deg);
+  z-index: 5;
+}
+
+/* FOTO 3 */
+.foto-card-3 {
+  width: 170px;
+  height: 200px;
+  left: 330px;
+  top: 20px;
+  transform: rotate(-5deg);
+  z-index: 4;
+}
+
+/* FOTO 4 */
+.foto-card-4 {
+  width: 175px;
+  height: 205px;
+  left: 60px;
+  top: 190px;
+  transform: rotate(5deg);
+  z-index: 6;
+}
+
+/* FOTO 5 */
+.foto-card-5 {
+  width: 180px;
+  height: 205px;
+  left: 245px;
+  top: 200px;
+  transform: rotate(-7deg);
+  z-index: 7;
+}
+
+.texto-banner {
+  right: 35px;
+  width: 300px;
+}
+.portfolio-banner {
+  max-width: 980px;
+  height: 760px;
+  overflow: hidden;
+}
+
+.portfolio-conteudo {
+  position: relative;
+  z-index: 10;
+  height: 100%;
+  padding: 45px 55px;
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 35px;
+  align-items: start;
+}
+
+.portfolio-logo-mini {
+  font-family: "Playfair Display", serif;
+  font-size: 72px;
+  font-weight: 800;
+  color: #b8862b;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.portfolio-info h2 {
+  font-family: "Playfair Display", serif;
+  font-size: 56px;
+  color: #3b271d;
+  text-transform: uppercase;
+  line-height: 0.95;
+  margin-bottom: 18px;
+}
+
+.portfolio-info p {
+  font-size: 20px;
+  color: #5f4639;
+  line-height: 1.4;
+  margin-bottom: 28px;
+}
+
+.portfolio-bloco {
+  margin-top: 28px;
+  padding: 28px 24px;
+  border-radius: 28px;
+  background: rgba(255, 250, 246, 0.62);
+  border: 1px solid rgba(139, 107, 84, 0.18);
+}
+
+.portfolio-tag {
+  display: inline-block;
+  margin-bottom: 22px;
+  padding: 11px 28px;
+  border-radius: 30px;
+  background: #a86f6a;
+  color: white;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 18px;
+}
+
+.linha-servico {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: center;
+  font-size: 22px;
+  color: #3b271d;
+  margin: 20px 0;
+}
+
+.linha-servico .pontilhado {
+  border-bottom: 2px dotted rgba(63, 45, 39, 0.45);
+  transform: translateY(5px);
+}
+
+.linha-servico strong {
+  white-space: nowrap;
+  font-size: 22px;
+}
+
+.portfolio-fotos {
+  position: relative;
+  height: 680px;
+  padding-top: 120px;
+}
+
+.foto-servico {
+  position: absolute;
+  width: 245px;
+  height: 175px;
+  padding: 9px;
+  background: rgba(255,255,255,0.9);
+  border-radius: 30px;
+  box-shadow: 0 22px 45px rgba(72, 45, 26, 0.22);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+.foto-servico img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 24px;
+  display: block;
+}
+
+.foto-servico-1 {
+  top: 55px;
+  right: 0;
+}
+
+.foto-servico-2 {
+  top: 255px;
+  right: 0;
+}
+
+.foto-servico-3 {
+  top: 455px;
+  right: 0;
+}
+
+.foto-servico.trocando {
+  opacity: 0;
+  transform: scale(0.94);
 }

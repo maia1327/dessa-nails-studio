@@ -166,38 +166,94 @@ function mostrarAvisoCliente(texto) {
   }, 3000);
 }
 
-/* GALERIA AUTOMÁTICA DA HOME */
+/* PORTFÓLIO / TABELA DE SERVIÇOS */
 
-const fotosGaleria = [
-  "./fotos/foto01.png",
-  "./fotos/foto02.png",
-  "./fotos/foto03.png",
-  "./fotos/foto04.png"
-];
+const portfolioPadrao = {
+  titulo: "Tabela de Serviços",
+  subtitulo: "Beleza, cuidado e sofisticação em cada detalhe.",
+  aplicacoes: [
+    { nome: "Molde F1", preco: "R$ 120,00" },
+    { nome: "Fibra de vidro", preco: "R$ 130,00" },
+    { nome: "Banho de gel", preco: "R$ 90,00" },
+    { nome: "Blindagem", preco: "R$ 80,00" },
+    { nome: "Esmaltação em Gel", preco: "R$ 60,00" }
+  ],
+  manutencoes: [
+    { nome: "Alongamento", preco: "R$ 90,00" },
+    { nome: "Banho de gel", preco: "R$ 60,00" }
+  ],
+  fotos: [
+    "./fotos/foto01.png",
+    "./fotos/foto02.png",
+    "./fotos/foto03.png",
+    "./fotos/foto04.png",
+    "./fotos/foto05.png",
+    "./fotos/foto06.png"
+  ]
+};
 
-function iniciarGaleriaHome() {
-  const imagemHome = document.getElementById("fotoGaleriaHome");
-
-  if (!imagemHome) return;
-
-  let fotoAtual = 0;
-
-  imagemHome.src = fotosGaleria[fotoAtual];
-
-  setInterval(() => {
-    imagemHome.classList.add("trocando");
-
-    setTimeout(() => {
-      fotoAtual++;
-
-      if (fotoAtual >= fotosGaleria.length) {
-        fotoAtual = 0;
-      }
-
-      imagemHome.src = fotosGaleria[fotoAtual];
-      imagemHome.classList.remove("trocando");
-    }, 300);
-  }, 3000);
+function carregarPortfolio() {
+  return JSON.parse(localStorage.getItem("portfolioConfig")) || portfolioPadrao;
 }
 
-window.addEventListener("load", iniciarGaleriaHome);
+function criarLinhaServico(item) {
+  return `
+    <div class="linha-servico">
+      <span>${item.nome}</span>
+      <span class="pontilhado"></span>
+      <strong>${item.preco}</strong>
+    </div>
+  `;
+}
+
+function renderizarPortfolio() {
+  const config = carregarPortfolio();
+
+  const titulo = document.getElementById("portfolioTitulo");
+  const subtitulo = document.getElementById("portfolioSubtitulo");
+  const listaAplicacoes = document.getElementById("listaAplicacoes");
+  const listaManutencoes = document.getElementById("listaManutencoes");
+
+  if (!titulo) return;
+
+  titulo.innerText = config.titulo;
+  subtitulo.innerText = config.subtitulo;
+
+  listaAplicacoes.innerHTML = config.aplicacoes.map(criarLinhaServico).join("");
+  listaManutencoes.innerHTML = config.manutencoes.map(criarLinhaServico).join("");
+
+  trocarFotosPortfolio();
+  setInterval(trocarFotosPortfolio, 4500);
+}
+
+function pegarTresFotosAleatorias(fotos) {
+  const embaralhadas = [...fotos].sort(() => Math.random() - 0.5);
+  return embaralhadas.slice(0, 3);
+}
+
+function trocarFotosPortfolio() {
+  const config = carregarPortfolio();
+  const fotos = pegarTresFotosAleatorias(config.fotos);
+
+  const img1 = document.getElementById("portfolioFoto1");
+  const img2 = document.getElementById("portfolioFoto2");
+  const img3 = document.getElementById("portfolioFoto3");
+
+  if (!img1 || !img2 || !img3) return;
+
+  document.querySelectorAll(".foto-servico").forEach(card => {
+    card.classList.add("trocando");
+  });
+
+  setTimeout(() => {
+    img1.src = fotos[0] || "./fotos/foto01.png";
+    img2.src = fotos[1] || "./fotos/foto02.png";
+    img3.src = fotos[2] || "./fotos/foto03.png";
+
+    document.querySelectorAll(".foto-servico").forEach(card => {
+      card.classList.remove("trocando");
+    });
+  }, 450);
+}
+
+window.addEventListener("load", renderizarPortfolio);
