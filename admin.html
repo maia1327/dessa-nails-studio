@@ -113,9 +113,22 @@
   </div>
 </section>
 
+<div id="modalConfirmacao" class="modal-confirmacao escondido-modal">
+  <div class="modal-confirmacao-box">
+    <h3>Confirmar exclusão</h3>
+    <p id="textoConfirmacao">Tem certeza que deseja excluir?</p>
+
+    <div class="modal-confirmacao-acoes">
+      <button class="btn-cancelar-modal" onclick="fecharConfirmacao()">Cancelar</button>
+      <button class="btn-confirmar-modal" onclick="confirmarExclusao()">Excluir</button>
+    </div>
+  </div>
+</div>
+
 <script>
   let disponibilidades = JSON.parse(localStorage.getItem("disponibilidades")) || [];
   let editandoIndex = null;
+  let acaoConfirmada = null;
 
   const portfolioPadrao = {
     titulo: "Tabela de Serviços",
@@ -153,6 +166,25 @@
     setTimeout(() => {
       msg.classList.remove("ativo");
     }, 2600);
+  }
+
+  function abrirConfirmacao(texto, callback) {
+    document.getElementById("textoConfirmacao").innerText = texto;
+    document.getElementById("modalConfirmacao").classList.remove("escondido-modal");
+    acaoConfirmada = callback;
+  }
+
+  function fecharConfirmacao() {
+    document.getElementById("modalConfirmacao").classList.add("escondido-modal");
+    acaoConfirmada = null;
+  }
+
+  function confirmarExclusao() {
+    if (acaoConfirmada) {
+      acaoConfirmada();
+    }
+
+    fecharConfirmacao();
   }
 
   function salvarStoragePortfolio() {
@@ -236,14 +268,12 @@
   function excluirServico(tipo, index) {
     const nome = portfolioConfig[tipo][index].nome;
 
-    if (!confirm(`Tem certeza que deseja excluir "${nome}"?`)) {
-      return;
-    }
-
-    portfolioConfig[tipo].splice(index, 1);
-    salvarStoragePortfolio();
-    renderizarPortfolioAdmin();
-    mostrarMensagem("Serviço excluído.");
+    abrirConfirmacao(`Deseja excluir "${nome}"?`, () => {
+      portfolioConfig[tipo].splice(index, 1);
+      salvarStoragePortfolio();
+      renderizarPortfolioAdmin();
+      mostrarMensagem("Serviço excluído.");
+    });
   }
 
   function renderizarFotosPortfolioAdmin() {
@@ -304,14 +334,12 @@
   }
 
   function excluirFotoPortfolio(index) {
-    if (!confirm("Tem certeza que deseja excluir esta foto?")) {
-      return;
-    }
-
-    portfolioConfig.fotos.splice(index, 1);
-    salvarStoragePortfolio();
-    renderizarFotosPortfolioAdmin();
-    mostrarMensagem("Foto excluída.");
+    abrirConfirmacao("Deseja excluir esta foto?", () => {
+      portfolioConfig.fotos.splice(index, 1);
+      salvarStoragePortfolio();
+      renderizarFotosPortfolioAdmin();
+      mostrarMensagem("Foto excluída.");
+    });
   }
 
   function salvarPortfolio() {
@@ -375,14 +403,12 @@
   }
 
   function excluirHorario(index) {
-    if (!confirm("Tem certeza que deseja excluir este horário?")) {
-      return;
-    }
-
-    disponibilidades.splice(index, 1);
-    salvarAutomatico();
-    renderizarHorarios();
-    mostrarMensagem("Horário excluído.");
+    abrirConfirmacao("Deseja excluir este horário?", () => {
+      disponibilidades.splice(index, 1);
+      salvarAutomatico();
+      renderizarHorarios();
+      mostrarMensagem("Horário excluído.");
+    });
   }
 
   function salvarAutomatico() {

@@ -689,191 +689,120 @@ body{
 }
 
 .admin-servico-item{
-  display:grid;
-  grid-template-columns:1fr 150px 90px;
-  gap:10px;
-  align-items:end;
-  padding:12px;
-  border-radius:22px;
-  background:#fbf6f0;
-  border:1px solid rgba(216,192,173,0.85);
-  margin-bottom:10px;
-}
-
-.admin-delete{
-  border:none;
-  background:#2d201b;
-  color:white;
-  border-radius:16px;
-  padding:14px 12px;
-  font-weight:900;
-  cursor:pointer;
-}
-
-.admin-ajuda{
-  color:#5f4639;
-  line-height:1.5;
-  margin-bottom:16px;
+  grid-template-columns:1fr 150px 110px;
 }
 
 .admin-foto-item{
-  display:grid;
-  grid-template-columns:76px 1fr 90px;
-  gap:10px;
-  align-items:center;
-  padding:12px;
-  border-radius:22px;
-  background:#fbf6f0;
-  border:1px solid rgba(216,192,173,0.85);
-  margin-bottom:10px;
+  grid-template-columns:76px 1fr 110px;
 }
 
-.admin-preview{
-  width:76px;
-  height:76px;
-  border-radius:18px;
-  overflow:hidden;
-  background:#ead8ca;
+.admin-acoes-item{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
 }
 
-.admin-preview img{
+.admin-edit,
+.admin-save-small,
+.admin-delete{
   width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.admin-horario-item{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:14px;
-  padding:16px;
-  border-radius:22px;
-  background:#fbf6f0;
-  border:1px solid #d8c0ad;
-  margin-bottom:10px;
-}
-
-.admin-horario-item.ocupado{
-  background:#fff0ee;
-  border-color:#b55a50;
-}
-
-.admin-horario-item strong{
-  display:block;
-}
-
-.admin-horario-item span{
-  font-weight:900;
-  color:#7d614d;
-}
-
-.admin-horario-item small{
-  display:block;
-  margin-top:4px;
-  font-weight:900;
-  color:#8b6b54;
-}
-
-.admin-horario-acoes{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-}
-
-.admin-horario-acoes button{
   border:none;
-  background:#8b6b54;
   color:white;
+  border-radius:14px;
   padding:10px 12px;
-  border-radius:16px;
   font-weight:900;
   cursor:pointer;
 }
 
-.admin-horario-acoes .danger{
-  background:#2d201b;
+.admin-edit{
+  background:#8b6b54;
 }
 
-.admin-vazio{
-  color:#7d614d;
-  font-weight:800;
-  padding:15px;
-  background:#fbf6f0;
+.admin-save-small{
+  background:#3f7f5f;
+}
+
+.admin-delete{
+  background:#8f3f35;
+}
+
+.admin-servico-item input:disabled,
+.admin-foto-item input:disabled{
+  opacity:0.75;
+  background:#f7eee7;
+  cursor:not-allowed;
+}
+
+.modal-confirmacao{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  background:rgba(35,22,17,0.48);
+  backdrop-filter:blur(6px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.escondido-modal{
+  display:none;
+}
+
+.modal-confirmacao-box{
+  width:100%;
+  max-width:420px;
+  background:#fffaf6;
+  border-radius:28px;
+  padding:28px;
+  box-shadow:0 25px 80px rgba(0,0,0,0.25);
+  text-align:center;
+  border:1px solid #d8c0ad;
+}
+
+.modal-confirmacao-box h3{
+  font-size:24px;
+  color:#2d201b;
+  margin-bottom:10px;
+}
+
+.modal-confirmacao-box p{
+  color:#5f4639;
+  line-height:1.5;
+  margin-bottom:24px;
+}
+
+.modal-confirmacao-acoes{
+  display:flex;
+  gap:12px;
+}
+
+.modal-confirmacao-acoes button{
+  flex:1;
+  border:none;
+  padding:14px;
   border-radius:18px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.btn-cancelar-modal{
+  background:#e9d8c8;
+  color:#5f4639;
+}
+
+.btn-confirmar-modal{
+  background:#8f3f35;
+  color:white;
 }
 
 @media(max-width:900px){
-  .admin-header,
-  .admin-card-top{
-    flex-direction:column;
-    align-items:flex-start;
-  }
-
-  .admin-grid{
-    grid-template-columns:1fr;
-  }
-
   .admin-servico-item,
-  .admin-foto-item,
-  .duas-colunas{
+  .admin-foto-item{
     grid-template-columns:1fr;
   }
 
-  .admin-preview{
-    width:100%;
-    height:170px;
-  }
-
-  .admin-horario-item{
+  .modal-confirmacao-acoes{
     flex-direction:column;
-    align-items:flex-start;
-  }
-}
-
-.admin-acoes-item {
-  display: flex;
-  gap: 8px;
-  align-items: end;
-}
-
-.admin-edit {
-  border: none;
-  background: #8b6b54;
-  color: white;
-  border-radius: 16px;
-  padding: 14px 12px;
-  font-weight: 900;
-  cursor: pointer;
-}
-
-.admin-save-small {
-  border: none;
-  background: #3f7f5f;
-  color: white;
-  border-radius: 16px;
-  padding: 14px 12px;
-  font-weight: 900;
-  cursor: pointer;
-}
-
-.admin-servico-item {
-  grid-template-columns: 1fr 150px 250px;
-}
-
-.admin-servico-item input:disabled {
-  opacity: 0.75;
-  background: #f7eee7;
-  cursor: not-allowed;
-}
-
-@media(max-width:900px) {
-  .admin-servico-item {
-    grid-template-columns: 1fr;
-  }
-
-  .admin-acoes-item {
-    flex-direction: column;
-    align-items: stretch;
   }
 }
