@@ -9,81 +9,92 @@
 
 <body class="admin-page">
 
-<section class="admin-layout">
-  <div class="admin-shell">
+<section class="admin-premium">
 
-    <div class="admin-header">
-      <div>
-        <span>Painel administrativo</span>
-        <h1>Andressa Santos</h1>
-        <p>Gerencie serviços, valores, fotos e horários do site.</p>
-      </div>
-
-      <a href="index.html" class="admin-link">Ver site</a>
+  <header class="admin-topbar">
+    <div>
+      <span>Painel Administrativo</span>
+      <h1>Andressa Santos</h1>
+      <p>Controle serviços, fotos e horários do site.</p>
     </div>
 
-    <div id="mensagemAdmin" class="mensagem-admin"></div>
+    <a href="index.html" class="admin-ver-site">Ver site</a>
+  </header>
 
-    <div class="admin-grid">
+  <div id="mensagemAdmin" class="mensagem-admin"></div>
 
-      <div class="admin-card">
-        <div class="admin-card-top">
+  <div class="admin-tabs">
+    <button class="tab-btn ativo" onclick="abrirAba('servicos', this)">Serviços</button>
+    <button class="tab-btn" onclick="abrirAba('fotos', this)">Fotos</button>
+    <button class="tab-btn" onclick="abrirAba('horarios', this)">Horários</button>
+  </div>
+
+  <main class="admin-container">
+
+    <section id="aba-servicos" class="admin-aba ativa">
+      <div class="admin-card-premium">
+        <div class="admin-card-header">
           <div>
             <span>Portfólio</span>
             <h2>Tabela de serviços</h2>
           </div>
-          <button class="admin-save" onclick="salvarPortfolio()">Salvar portfólio</button>
+
+          <button class="btn-salvar-principal" onclick="salvarPortfolio()">Salvar tudo</button>
         </div>
 
-        <div class="admin-form">
+        <div class="admin-form-premium">
           <label>Título</label>
-          <input type="text" id="portfolioTituloAdmin" placeholder="Título">
+          <input type="text" id="portfolioTituloAdmin">
 
           <label>Subtítulo</label>
-          <input type="text" id="portfolioSubtituloAdmin" placeholder="Subtítulo">
+          <input type="text" id="portfolioSubtituloAdmin">
         </div>
 
-        <div class="admin-section-title">
+        <div class="admin-section-head">
           <h3>Aplicações</h3>
           <button onclick="adicionarServico('aplicacoes')">+ Adicionar</button>
         </div>
 
         <div id="listaAplicacoesAdmin"></div>
 
-        <div class="admin-section-title">
+        <div class="admin-section-head">
           <h3>Manutenções</h3>
           <button onclick="adicionarServico('manutencoes')">+ Adicionar</button>
         </div>
 
         <div id="listaManutencoesAdmin"></div>
       </div>
+    </section>
 
-      <div class="admin-card">
-        <div class="admin-card-top">
+    <section id="aba-fotos" class="admin-aba">
+      <div class="admin-card-premium">
+        <div class="admin-card-header">
           <div>
             <span>Galeria</span>
             <h2>Fotos do portfólio</h2>
           </div>
+
+          <button class="btn-salvar-principal" onclick="salvarPortfolio()">Salvar fotos</button>
         </div>
 
-        <p class="admin-ajuda">
-          Exemplo: <strong>./fotos/foto01.png</strong>
-        </p>
+        <p class="admin-dica">Exemplo de caminho: <strong>./fotos/foto01.png</strong></p>
 
         <div id="listaFotosPortfolioAdmin"></div>
 
-        <button class="admin-save full" onclick="adicionarFotoPortfolio()">+ Adicionar foto</button>
+        <button class="btn-add-full" onclick="adicionarFotoPortfolio()">+ Adicionar foto</button>
       </div>
+    </section>
 
-      <div class="admin-card">
-        <div class="admin-card-top">
+    <section id="aba-horarios" class="admin-aba">
+      <div class="admin-card-premium">
+        <div class="admin-card-header">
           <div>
             <span>Agenda</span>
-            <h2>Adicionar disponibilidade</h2>
+            <h2>Adicionar horário</h2>
           </div>
         </div>
 
-        <div class="admin-form duas-colunas">
+        <div class="admin-form-horario">
           <div>
             <label>Data</label>
             <input type="date" id="adminData">
@@ -93,13 +104,13 @@
             <label>Horário</label>
             <input type="time" id="adminHorario">
           </div>
-        </div>
 
-        <button class="admin-save full" onclick="adicionarHorario()">Adicionar horário</button>
+          <button onclick="adicionarHorario()">Adicionar horário</button>
+        </div>
       </div>
 
-      <div class="admin-card">
-        <div class="admin-card-top">
+      <div class="admin-card-premium">
+        <div class="admin-card-header">
           <div>
             <span>Controle</span>
             <h2>Horários cadastrados</h2>
@@ -108,9 +119,9 @@
 
         <div id="listaHorarios"></div>
       </div>
+    </section>
 
-    </div>
-  </div>
+  </main>
 </section>
 
 <div id="modalConfirmacao" class="modal-confirmacao escondido-modal">
@@ -158,6 +169,14 @@
     status: item.status || "disponivel"
   }));
 
+  function abrirAba(nome, botao) {
+    document.querySelectorAll(".admin-aba").forEach(aba => aba.classList.remove("ativa"));
+    document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("ativo"));
+
+    document.getElementById(`aba-${nome}`).classList.add("ativa");
+    botao.classList.add("ativo");
+  }
+
   function mostrarMensagem(texto) {
     const msg = document.getElementById("mensagemAdmin");
     msg.innerText = texto;
@@ -165,7 +184,7 @@
 
     setTimeout(() => {
       msg.classList.remove("ativo");
-    }, 2600);
+    }, 2500);
   }
 
   function abrirConfirmacao(texto, callback) {
@@ -180,10 +199,7 @@
   }
 
   function confirmarExclusao() {
-    if (acaoConfirmada) {
-      acaoConfirmada();
-    }
-
+    if (acaoConfirmada) acaoConfirmada();
     fecharConfirmacao();
   }
 
@@ -206,7 +222,7 @@
 
     portfolioConfig[tipo].forEach((item, index) => {
       const div = document.createElement("div");
-      div.className = "admin-servico-item";
+      div.className = "servico-admin-card";
 
       div.innerHTML = `
         <div>
@@ -219,10 +235,9 @@
           <input id="${tipo}-preco-${index}" type="text" value="${item.preco}" disabled>
         </div>
 
-        <div class="admin-acoes-item">
-          <button class="admin-edit" onclick="editarLinhaServico('${tipo}', ${index})">Editar</button>
-          <button class="admin-save-small" onclick="salvarLinhaServico('${tipo}', ${index})">Salvar</button>
-          <button class="admin-delete" onclick="excluirServico('${tipo}', ${index})">Excluir</button>
+        <div class="botoes-servico-admin">
+          <button id="${tipo}-botao-${index}" class="btn-editar-servico" onclick="alternarEdicaoServico('${tipo}', ${index})">Editar</button>
+          <button class="btn-excluir-servico" onclick="excluirServico('${tipo}', ${index})">Excluir</button>
         </div>
       `;
 
@@ -230,19 +245,27 @@
     });
   }
 
-  function editarLinhaServico(tipo, index) {
-    document.getElementById(`${tipo}-nome-${index}`).disabled = false;
-    document.getElementById(`${tipo}-preco-${index}`).disabled = false;
-    document.getElementById(`${tipo}-nome-${index}`).focus();
-    mostrarMensagem("Agora você pode editar este serviço.");
-  }
+  function alternarEdicaoServico(tipo, index) {
+    const inputNome = document.getElementById(`${tipo}-nome-${index}`);
+    const inputPreco = document.getElementById(`${tipo}-preco-${index}`);
+    const botao = document.getElementById(`${tipo}-botao-${index}`);
 
-  function salvarLinhaServico(tipo, index) {
-    const nome = document.getElementById(`${tipo}-nome-${index}`).value.trim();
-    const preco = document.getElementById(`${tipo}-preco-${index}`).value.trim();
+    const estaEditando = !inputNome.disabled;
+
+    if (!estaEditando) {
+      inputNome.disabled = false;
+      inputPreco.disabled = false;
+      inputNome.focus();
+      botao.innerText = "Salvar";
+      botao.classList.add("salvando");
+      return;
+    }
+
+    const nome = inputNome.value.trim();
+    const preco = inputPreco.value.trim();
 
     if (!nome || !preco) {
-      mostrarMensagem("Preencha o nome e o valor.");
+      mostrarMensagem("Preencha o serviço e o valor.");
       return;
     }
 
@@ -250,7 +273,12 @@
     portfolioConfig[tipo][index].preco = preco;
 
     salvarStoragePortfolio();
-    renderizarPortfolioAdmin();
+
+    inputNome.disabled = true;
+    inputPreco.disabled = true;
+    botao.innerText = "Editar";
+    botao.classList.remove("salvando");
+
     mostrarMensagem("Serviço salvo com sucesso!");
   }
 
@@ -262,7 +290,7 @@
 
     salvarStoragePortfolio();
     renderizarPortfolioAdmin();
-    mostrarMensagem("Serviço adicionado. Clique em Editar para alterar.");
+    mostrarMensagem("Serviço adicionado.");
   }
 
   function excluirServico(tipo, index) {
@@ -282,22 +310,15 @@
 
     portfolioConfig.fotos.forEach((foto, index) => {
       const div = document.createElement("div");
-      div.className = "admin-foto-item";
+      div.className = "foto-admin-card";
 
       div.innerHTML = `
-        <div class="admin-preview">
-          <img src="${foto}" alt="Prévia da foto">
-        </div>
+        <img src="${foto}" alt="Foto">
+        <input id="foto-${index}" type="text" value="${foto}" disabled>
 
-        <div>
-          <label>Caminho da foto</label>
-          <input id="foto-${index}" type="text" value="${foto}" disabled>
-        </div>
-
-        <div class="admin-acoes-item">
-          <button class="admin-edit" onclick="editarFotoLinha(${index})">Editar</button>
-          <button class="admin-save-small" onclick="salvarFotoLinha(${index})">Salvar</button>
-          <button class="admin-delete" onclick="excluirFotoPortfolio(${index})">Excluir</button>
+        <div class="botoes-servico-admin">
+          <button id="foto-botao-${index}" class="btn-editar-servico" onclick="alternarEdicaoFoto(${index})">Editar</button>
+          <button class="btn-excluir-servico" onclick="excluirFotoPortfolio(${index})">Excluir</button>
         </div>
       `;
 
@@ -305,14 +326,21 @@
     });
   }
 
-  function editarFotoLinha(index) {
-    document.getElementById(`foto-${index}`).disabled = false;
-    document.getElementById(`foto-${index}`).focus();
-    mostrarMensagem("Agora você pode editar o caminho da foto.");
-  }
+  function alternarEdicaoFoto(index) {
+    const input = document.getElementById(`foto-${index}`);
+    const botao = document.getElementById(`foto-botao-${index}`);
 
-  function salvarFotoLinha(index) {
-    const valor = document.getElementById(`foto-${index}`).value.trim();
+    const estaEditando = !input.disabled;
+
+    if (!estaEditando) {
+      input.disabled = false;
+      input.focus();
+      botao.innerText = "Salvar";
+      botao.classList.add("salvando");
+      return;
+    }
+
+    const valor = input.value.trim();
 
     if (!valor) {
       mostrarMensagem("Preencha o caminho da foto.");
@@ -320,8 +348,12 @@
     }
 
     portfolioConfig.fotos[index] = valor;
-
     salvarStoragePortfolio();
+
+    input.disabled = true;
+    botao.innerText = "Editar";
+    botao.classList.remove("salvando");
+
     renderizarFotosPortfolioAdmin();
     mostrarMensagem("Foto salva com sucesso!");
   }
@@ -330,7 +362,7 @@
     portfolioConfig.fotos.push("./fotos/foto01.png");
     salvarStoragePortfolio();
     renderizarFotosPortfolioAdmin();
-    mostrarMensagem("Foto adicionada. Clique em Editar para alterar.");
+    mostrarMensagem("Foto adicionada.");
   }
 
   function excluirFotoPortfolio(index) {
@@ -347,6 +379,7 @@
     portfolioConfig.subtitulo = document.getElementById("portfolioSubtituloAdmin").value.trim();
 
     salvarStoragePortfolio();
+    renderizarPortfolioAdmin();
     mostrarMensagem("Portfólio salvo com sucesso!");
   }
 
@@ -433,19 +466,19 @@
       .sort((a, b) => `${a.data}${a.horario}`.localeCompare(`${b.data}${b.horario}`))
       .forEach((item, index) => {
         const card = document.createElement("div");
-        card.className = `admin-horario-item ${item.status === "ocupado" ? "ocupado" : ""}`;
+        card.className = `horario-admin-card ${item.status === "ocupado" ? "ocupado" : ""}`;
 
         const textoStatus = item.status === "ocupado" ? "Ocupado" : "Disponível";
         const botaoStatus = item.status === "ocupado" ? "Liberar" : "Ocupar";
 
         card.innerHTML = `
-          <div>
+          <div class="horario-info">
             <strong>${formatarData(item.data)}</strong>
             <span>${item.horario}</span>
             <small>${textoStatus}</small>
           </div>
 
-          <div class="admin-horario-acoes">
+          <div class="horario-botoes">
             <button onclick="editarHorario(${index})">Editar</button>
             <button onclick="alternarStatus(${index})">${botaoStatus}</button>
             <button class="danger" onclick="excluirHorario(${index})">Excluir</button>
